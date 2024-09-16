@@ -7,7 +7,7 @@ dotenv.config();
 // You will need to set these environment variables or edit the following values
 const endpoint = process.env["AZURE_OPENAI_ENDPOINT"] || "<endpoint>";
 const apiKey = process.env["AZURE_OPENAI_API_KEY"] || "<api key>";
-const apiVersion = "2024-08-06";
+const apiVersion = "2024-05-01-preview";
 const deployment = "gpt-4o"; //This must match your deployment name.
 require("dotenv/config");
 
@@ -28,6 +28,11 @@ async function main() {
     console.log(choice.message);
   }
 }
+
+console.log("Endpoint:", endpoint);
+console.log("API Key:", apiKey);
+console.log("Deployment:", deployment);
+
 
 main().catch((err) => {
   console.error("The sample encountered an error:", err);
