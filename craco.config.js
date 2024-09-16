@@ -5,7 +5,6 @@ module.exports = {
       plugins: [
         require('tailwindcss'),
         require('autoprefixer'),
-        ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
       ],
     },
   },

@@ -39,3 +39,5 @@ main().catch((err) => {
 });
 
 module.exports = { main };
+
+export default main;
