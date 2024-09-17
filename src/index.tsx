@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrandVariants, createDarkTheme, createLightTheme, FluentProvider, Theme } from '@fluentui/react-components';
+import { BrandVariants, createDarkTheme, createLightTheme, FluentProvider, Theme, themeToTokensObject } from '@fluentui/react-components';
 
 const poopcoloredKevinFav: BrandVariants = { 
   10: "#020403",
@@ -36,6 +36,7 @@ const darkTheme: Theme = {
 darkTheme.colorBrandForeground1 = poopcoloredKevinFav[110];
 darkTheme.colorBrandForeground2 = poopcoloredKevinFav[120];
 
+export const tokens = themeToTokensObject(lightTheme);
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

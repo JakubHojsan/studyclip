@@ -18,7 +18,7 @@ const FileSelector: React.FC = () => {
   }, [filesContent]);
 
   return (
-      <Button className={classes.filePickerButton} onClick={() => openFilePicker()}>Select Files</Button>
+      <Button appearance="primary" className={classes.filePickerButton} onClick={() => openFilePicker()}>Select Files</Button>
   );
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Stack, Link, Text, IStackTokens } from '@fluentui/react';
 import FileReader from './FileUploader';
+import {tokens} from '../index';
 
 // Define spacing between the navigation items
 const stackTokens: IStackTokens = { childrenGap: 20 };
@@ -16,6 +17,7 @@ const NavBar: React.FC = () => {
         root: {
           padding: '10px 20px',
           width: '100%',
+          backgroundColor: tokens.colorNeutralBackground3,
         },
       }}
     >
