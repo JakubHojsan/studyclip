@@ -3,6 +3,7 @@ import './App.css';
 import NavBar from './components/Nav';
 import Navbar from './components/landing/heading';
 import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider } from "@fluentui/react-components";
+import Flashcard from './flashcard';
 
 const App: React.FC = () => {
 
@@ -52,6 +53,8 @@ const App: React.FC = () => {
       </div>
       
       <p>Selected options: {selectedCheckboxes.length > 0 ? selectedCheckboxes.join(', ') : 'None'}</p>
+
+      <Flashcard frontText="Front of the card" backText="Back of the card" />
     </>
   );
 };
