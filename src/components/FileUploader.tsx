@@ -20,12 +20,6 @@ const FileSelector: React.FC = () => {
   return (
     <>
       <Button className={classes.filePickerButton} onClick={() => openFilePicker()}>Select Files</Button>
-      {filesContent.map((file, index) => (
-        <div key={index}>
-          <h2>{file.name}</h2>
-          <div>{file.content}</div>
-        </div>
-      ))}
     </>
   );
 };
