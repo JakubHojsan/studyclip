@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import Navbar from './components/landing/heading';
-import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens } from "@fluentui/react-components";
+import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider } from "@fluentui/react-components";
 
 const App: React.FC = () => {
 
@@ -18,11 +18,25 @@ const App: React.FC = () => {
     }
   };
 
-
+  const [selectedRadio, setSelectedRadio] = useState<string>('');
+  
   return (
     <>
       <TabList>
       </TabList>
+      <div id="Wtf are we doing">
+        <Field label="CHOOSE ONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!">
+        <RadioGroup value={selectedRadio} layout="horizontal" onChange={(_, data) => setSelectedRadio(data.value)}>
+          <Radio value="john oliver" label="Small"/>
+            <Radio value="conan o'brien" label="Medium"/>
+            <Radio value="jon stewart" label="Large"/>
+          </RadioGroup>
+        </Field>
+      </div>
+
+      <p>Selected host: {selectedRadio}</p>
+
+
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {options.map(option => (
           <Checkbox
