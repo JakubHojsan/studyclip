@@ -25,7 +25,7 @@ async function main() {
     */
    messages: [
     { role: "system", content: "You are a helpful assistant." },
-    { role: "user", content: "How many r's are in the word strawberry?" },
+    { role: "user", content: "Generate a random number." },
    ],
     model: "",
   });
@@ -33,11 +33,13 @@ async function main() {
   for (const choice of result.choices) {
     console.log(choice.message);
   }
+
+  return result.choices[0].message;
     
   /*
   const prompt = ["How many r's are in the word strawberry?"];
 
-  const client = new AzureOpenAI({ endpoint, apiKey, apiVersion, deployment });  
+  const client = new AzureOpenAI({ endpoin t, apiKey, apiVersion, deployment });  
 
   const result = await client.completions.create({ prompt, model: deployment, max_tokens: 128 });
 

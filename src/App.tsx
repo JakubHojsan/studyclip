@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import './App.css';
 import NavBar from './components/Nav';
 import Navbar from './components/landing/heading';
 import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider } from "@fluentui/react-components";
 import Flashcard from './flashcard';
+
+import main from './ChatCompletion';
 
 const App: React.FC = () => {
 
@@ -21,6 +23,22 @@ const App: React.FC = () => {
   };
 
   const [selectedRadio, setSelectedRadio] = useState<string>('');
+
+  // Call the ChatCompletion function and store the result of the async function
+
+  const [result, setResult] = useState<string>("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await main();
+      setResult(result);
+      console.log("Result: ", result);
+    };
+
+    fetchData();
+  }, []);
+
+  console.log("Result: ", result);
   
   return (
     // Create a new TabList component
@@ -54,7 +72,7 @@ const App: React.FC = () => {
       
       <p>Selected options: {selectedCheckboxes.length > 0 ? selectedCheckboxes.join(', ') : 'None'}</p>
 
-      <Flashcard frontText="Front of the card" backText="Back of the card" />
+      <Flashcard frontText={result} backText="Back of the card" />
     </>
   );
 };
