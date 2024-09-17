@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@azure/identity": "^4.4.1",
+    "@fluentui/react": "^8.120.9",
     "@fluentui/react-components": "^9.54.15",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
