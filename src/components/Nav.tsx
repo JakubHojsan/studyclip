@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Stack, Link, Text, IStackTokens } from '@fluentui/react';
 import FileReader, { FileSelectorProps } from './FileUploader';
 import {tokens} from '../index';
-import { UploadModal }  from './UploadModal';
+import UploadModal  from './UploadModal';
+import { Button } from '@fluentui/react-components';
 
 // Define spacing between the navigation items
 const stackTokens: IStackTokens = { childrenGap: 20 };
-
 const NavBar: React.FC<FileSelectorProps> = (props) => {
+  
+const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   return (
     <Stack
       horizontal
@@ -30,10 +32,11 @@ const NavBar: React.FC<FileSelectorProps> = (props) => {
       {/* Right section: Navigation Links */}
       <Stack horizontal tokens={stackTokens}>
         {/*<FileReader setSelectedFiles={props.setSelectedFiles}/>*/}
-        <UploadModal/>
+        <UploadModal isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen}/>
       </Stack>
+      <Button onClick={() => setIsDialogOpen(true)}> Create Flashcards </Button>
     </Stack>
   );
-};
+}
 
 export default NavBar;
