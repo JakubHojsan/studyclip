@@ -70,7 +70,11 @@ const App: React.FC = () => {
       */
 
     };
-    sendFiles();
+    if (selectedFiles.length > 0) {
+      sendFiles();
+    } else {
+      console.log('No files uploaded');
+    };
   };
   
 
