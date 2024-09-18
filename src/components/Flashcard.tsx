@@ -28,8 +28,17 @@ const Flashcard: React.FC<FlashcardProps> = ({ frontText, backText, isFlipped, s
       }}
     >
       {/* Card Component */}
-      <Card style={{margin: 0}}>
-        <Button onClick={handleFlip} appearance="transparent" style={{padding: 0}}>
+      <Card style={{ 
+        width: '300px',
+        height: '200px',
+        padding: '10px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden', // Ensure text doesn't overflow outside the card
+        textAlign: 'center',}}
+        onClick={handleFlip} appearance="outline">
+        <Button appearance="transparent">
         {isFlipped ? backText : frontText}
         </Button>
       </Card>

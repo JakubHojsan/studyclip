@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Stack, Text, IStackTokens } from '@fluentui/react';
 import {Button} from '@fluentui/react-components'
 import Flashcard from './Flashcard'; // Import the Flashcard component
@@ -38,6 +38,33 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards }) => {
     }
   };
 
+  // Function to go to the previous flashcard
+  const goToBeginning = () => {
+      setCurrentIndex(0);
+  };
+
+  // Function to go to the previous flashcard
+  const goToEnd = () => {
+      setCurrentIndex(flashcards.length - 1);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowRight' || event.key === " ") {
+        goToNext(); // Right arrow key to go to the next card
+      } else if (event.key === 'ArrowLeft') {
+        goToPrevious(); // Left arrow key to go to the previous card
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentIndex]); // Dependencies include currentCardIndex to make sure it updates correctly
+
   return (
     <Stack horizontalAlign="center" verticalAlign="center" tokens={stackTokens}>
       {/* Render the current flashcard */}
@@ -50,6 +77,13 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards }) => {
 
       {/* Navigation Buttons */}
       <Stack horizontal tokens={stackTokens} horizontalAlign="center">
+        <Button
+          onClick={goToBeginning}
+          disabled={currentIndex === 0} // Disable if on the first card
+          appearance="secondary"
+        >
+        Go to first
+        </Button>
         <Button
           onClick={goToPrevious}
           disabled={currentIndex === 0} // Disable if on the first card
@@ -64,6 +98,13 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards }) => {
           appearance="secondary"
           >
           Next
+        </Button>
+        <Button
+          onClick={goToEnd}
+          disabled={currentIndex === flashcards.length - 1} // Disable if on the last card
+          appearance="secondary"
+          >
+          Go to end
         </Button>
       </Stack>
     </Stack>
