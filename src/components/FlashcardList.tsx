@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stack, Text, IStackTokens } from '@fluentui/react';
 import {Button} from '@fluentui/react-components'
 import Flashcard from './Flashcard'; // Import the Flashcard component
@@ -17,7 +17,13 @@ interface FlashcardListProps {
 
 const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0); // Manage the current flashcard index
+  const [isFlipped, setIsFlipped] = useState<boolean>(false); // Manage flip state
 
+  // Reset flip state when navigating to a different flashcard
+  useEffect(() => {
+    setIsFlipped(false); // Reset the flip state when currentIndex changes
+  }, [currentIndex]);
+  
   // Function to go to the next flashcard
   const goToNext = () => {
     if (currentIndex < flashcards.length - 1) {
@@ -38,6 +44,8 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards }) => {
       <Flashcard 
         frontText={flashcards[currentIndex].frontText} 
         backText={flashcards[currentIndex].backText} 
+        isFlipped={isFlipped}
+        setIsFlipped={setIsFlipped}
       />
 
       {/* Navigation Buttons */}

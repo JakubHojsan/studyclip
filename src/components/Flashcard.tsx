@@ -5,10 +5,11 @@ import {Card, Button} from '@fluentui/react-components';
 interface FlashcardProps {
   frontText: string;
   backText: string;
+  isFlipped: boolean;
+  setIsFlipped: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Flashcard: React.FC<FlashcardProps> = ({ frontText, backText }) => {
-  const [isFlipped, setIsFlipped] = useState<boolean>(false);
+const Flashcard: React.FC<FlashcardProps> = ({ frontText, backText, isFlipped, setIsFlipped }) => {
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
