@@ -11,7 +11,7 @@ export interface FlashcardData {
   backText: string;
 }
 
-interface FlashcardListProps {
+export interface FlashcardListProps {
   flashcards: FlashcardData[];
 }
 

@@ -62,25 +62,31 @@ app.post('/api/generateFlashcards', async (req, res) => {
   const result = await client.chat.completions.create({
   
   messages: [
-    { role: "system", content: "You are a helpful assistant." },
-    { role: "user", content: "Generate a random number." },
+    { role: "system", content: "You are a helpful study assistant. You extract the distinct facts within the notes received to create flashcards. Flashcards are formatted as JSON objects with 'frontText' and 'backText' fields. Present all flashcards as a JSON array in raw format, not a codeblock, ensuring that no terms are added beyond those found in the original notes." },
+    { role: "user", content: prompt },
    ],
     model: "",
   });
 
-  for (const choice of result.choices) {
-    console.log("random numbers???")
-    console.log(choice.message);
-  }
+  console.log("prompt??? ", prompt);
 
-  try {
-    return res.status(200).json({
-      message: result.choices[0].message,
-    })
-  }
-  catch (error) {
-    console.log("bello! you have an error in api/generateFlashcards")
-    console.log(error.message);
+  for (const choice of result.choices) {  
+    try {
+      console.log("content??? ", choice.message.content);
+      const content = choice.message.content;
+      // const stripped_content = content.match(/\[.*\]/);
+     // console.log("stripped_content??? ", stripped_content);
+      //const flashcards = JSON.parse(stripped_content);
+      const flashcards = JSON.parse(content);
+      console.log("flashcards??? ", flashcards);
+      return res.status(200).json({
+        flashcards: flashcards,
+      });
+    }
+    catch (error) {
+      console.log("bello! you have an error in api/generateFlashcards")
+      console.log(error.message);
+    }
   }
 });
 

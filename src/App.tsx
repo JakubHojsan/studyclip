@@ -3,7 +3,7 @@ import './App.css';
 import NavBar from './components/Nav';
 import Navbar from './components/landing/heading';
 import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider } from "@fluentui/react-components";
-import FlashcardList, { FlashcardData } from './components/FlashcardList';
+import FlashcardList, { FlashcardData, FlashcardListProps } from './components/FlashcardList';
 
 
 const App: React.FC = () => {
@@ -26,7 +26,8 @@ const App: React.FC = () => {
   };
 
   const [selectedRadio, setSelectedRadio] = useState<string>('');
-  const flashcards: FlashcardData[] = [
+  
+  const sampleFlashcards: FlashcardData[] = [
     { frontText: 'What is the capital of France?', backText: 'Paris' },
     { frontText: 'Who wrote "To Kill a Mockingbird"?', backText: 'Harper Lee' },
     { frontText: 'What is the chemical symbol for water?', backText: 'H2O' },
@@ -92,8 +93,33 @@ const App: React.FC = () => {
       console.log("Result: ", result);
       setLoading(false);
     };
+  const [flashcards, setFlashcards] = useState<FlashcardData[]>(sampleFlashcards);
+  
+  const prompt = "NASA is a space org. Janna is a software engineer.";
 
-    fetchData();
+  async function fetchFlashcards() {
+
+    const response = await fetch("http://localhost:5001/api/generateFlashcards", {
+      method: 'POST',
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json',
+      },  
+      // add prompt
+      body: JSON.stringify({ prompt: prompt }),
+    });
+
+    const data = await response.json() as FlashcardListProps;
+
+    console.log("data", data);
+    
+    setFlashcards(data.flashcards);
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    fetchFlashcards();
   }, []);
   
   
