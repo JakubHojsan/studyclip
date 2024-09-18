@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 const cors = require('cors');
 
-app.use(bodyParser.json({limit: '100kb'}));
+app.use(bodyParser.json({limit: '2mb'}));
 
 
 
@@ -57,6 +57,8 @@ app.post('/api/openai', async (req, res) => {
 
 app.post('/api/generateFlashcards', async (req, res) => {
   const prompt = req.body.prompt;
+
+  console.log('Body: ', req.body.files);
 
   const client = new AzureOpenAI({ endpoint, apiKey, apiVersion, deployment});
   const result = await client.chat.completions.create({
