@@ -39,13 +39,64 @@ const App: React.FC = () => {
     { frontText: 'What is the largest desert in the world?', backText: 'Sahara Desert' },
     { frontText: 'Who was the first man to walk on the moon?', backText: 'Neil Armstrong' }
   ];
+  
+  const [prompt, setPrompt] = useState<string>('NASA is a space org. Janna is a software engineer.');
+  
+  const handleSendFiles = () => {
+    const sendFiles = async () => {
+      console.log("Number of files sent: ", selectedFiles.length);
+      console.log("File: ", selectedFiles.toString());
+
+      const reader = new FileReader();
+
+      /*
+      // Read the first file
+      reader.readAsText(selectedFiles[0]);
+
+      // When the file is read, set the prompt to the file content
+      reader.onload = () => {
+        const content = reader.result as string;
+        setPrompt(content);
+      
+      console.log("here is the read string ", prompt);
+      */
+      const sometext = selectedFiles[0].content;
+      console.log("sometext: ", sometext);
+
+      setPrompt(sometext);
+      fetchFlashcards();
+      
+      /*
+      const result = await fetch("http://localhost:5001/api/generateFlashcards", {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ files: selectedFiles }),
+      });
+      const data = await result.json() as ResponseMessage;
+      const message = data.message.content;
+      console.log("New Cards:", message);
+      setResult(message)
+      console.log("Result: ", result);
+      setLoading(false);
+      */
+
+    };
+    sendFiles();
+  };
+  
+
+  //const prompt = "NASA is a space org. Janna is a software engineer.";
+  
+
 
   const [flashcards, setFlashcards] = useState<FlashcardData[]>(sampleFlashcards);
   
-  const prompt = "NASA is a space org. Janna is a software engineer.";
+
 
   async function fetchFlashcards() {
-
     const response = await fetch("http://localhost:5001/api/generateFlashcards", {
       method: 'POST',
       mode: "cors",
@@ -101,10 +152,13 @@ const App: React.FC = () => {
       </div>
       
       <p>Selected options: {selectedCheckboxes.length > 0 ? selectedCheckboxes.join(', ') : 'None'}</p>
+      
+      <Button id="sendFilesButton" onClick={handleSendFiles}>MUH CARDS</Button>
 
       <FlashcardList flashcards={flashcards} />
     </>
   );
 };
+
 
 export default App;
