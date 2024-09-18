@@ -5,8 +5,6 @@ import Navbar from './components/landing/heading';
 import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider } from "@fluentui/react-components";
 import Flashcard from './flashcard';
 
-import main from './ChatCompletion';
-
 const App: React.FC = () => {
 
   // LIst of focus areas for flashcards
@@ -26,19 +24,39 @@ const App: React.FC = () => {
 
   // Call the ChatCompletion function and store the result of the async function
 
+  
   const [result, setResult] = useState<string>("");
 
+  type ResponseMessage = {
+    message: string,
+  }
+  
+  
   useEffect(() => {
     const fetchData = async () => {
-      const result = await main();
-      setResult(result);
+      /*
+      const result = await fetch("http://localhost:5001/api", {
+        mode: "cors"
+      });
+      const data = await result.json() as ResponseMessage;
+      const message = data.message;
+      console.log("Message: ", message);
+      setResult(message);
+      console.log("Result: ", result);
+      */
+     const result = await fetch("http://localhost:5001/api/openai", {
+        mode: "cors"
+      });
+      const data = await result.json() as ResponseMessage;
+      const message = data.message;
+      console.log("Message: ", message);
+      setResult(message);
       console.log("Result: ", result);
     };
 
     fetchData();
   }, []);
-
-  console.log("Result: ", result);
+  
   
   return (
     // Create a new TabList component
@@ -72,7 +90,7 @@ const App: React.FC = () => {
       
       <p>Selected options: {selectedCheckboxes.length > 0 ? selectedCheckboxes.join(', ') : 'None'}</p>
 
-      <Flashcard frontText={result} backText="Back of the card" />
+      <Flashcard frontText={result} backText={result} />
     </>
   );
 };
