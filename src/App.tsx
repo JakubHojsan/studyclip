@@ -13,6 +13,8 @@ const App: React.FC = () => {
 
   const [selectedCheckboxes, setSelectedCheckboxes] = useState<string[]>([]);
 
+  const [loading, setLoading] = useState<boolean>(true);
+
   const handleCheckboxChange = (value: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       setSelectedCheckboxes([...selectedCheckboxes, value]);
@@ -41,30 +43,27 @@ const App: React.FC = () => {
   const [result, setResult] = useState<string>("");
 
   type ResponseMessage = {
-    message: string,
-  }
+    message: {
+      content: string;
+    };
+  };
   
   
   useEffect(() => {
     const fetchData = async () => {
-      /*
-      const result = await fetch("http://localhost:5001/api", {
-        mode: "cors"
+     const result = await fetch("http://localhost:5001/api/generateFlashcards", {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+          'Content-Type': 'application/json',
+        },  
       });
       const data = await result.json() as ResponseMessage;
-      const message = data.message;
+      const message = data.message.content;
       console.log("Message: ", message);
       setResult(message);
       console.log("Result: ", result);
-      */
-     const result = await fetch("http://localhost:5001/api/openai", {
-        mode: "cors"
-      });
-      const data = await result.json() as ResponseMessage;
-      const message = data.message;
-      console.log("Message: ", message);
-      setResult(message);
-      console.log("Result: ", result);
+      setLoading(false);
     };
 
     fetchData();

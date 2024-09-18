@@ -42,9 +42,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <FluentProvider theme={lightTheme}>
-    <React.StrictMode>
       <App />
-    </React.StrictMode>
   </FluentProvider>
 );
 
