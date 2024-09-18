@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import './App.css';
 import NavBar from './components/Nav';
 import Navbar from './components/landing/heading';
-import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider } from "@fluentui/react-components";
+import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider, Spinner } from "@fluentui/react-components";
 import Flashcard from './flashcard';
 
 const App: React.FC = () => {
@@ -11,6 +11,8 @@ const App: React.FC = () => {
   const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5'];
 
   const [selectedCheckboxes, setSelectedCheckboxes] = useState<string[]>([]);
+
+  const [loading, setLoading] = useState<boolean>(true);
 
   const handleCheckboxChange = (value: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
@@ -21,6 +23,39 @@ const App: React.FC = () => {
   };
 
   const [selectedRadio, setSelectedRadio] = useState<string>('');
+
+  // Call the ChatCompletion function and store the result of the async function
+
+  
+  const [result, setResult] = useState<string>("");
+
+  type ResponseMessage = {
+    message: {
+      content: string;
+    };
+  };
+  
+  
+  useEffect(() => {
+    const fetchData = async () => {
+     const result = await fetch("http://localhost:5001/api/generateFlashcards", {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+          'Content-Type': 'application/json',
+        },  
+      });
+      const data = await result.json() as ResponseMessage;
+      const message = data.message.content;
+      console.log("Message: ", message);
+      setResult(message);
+      console.log("Result: ", result);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+  
   
   return (
     // Create a new TabList component
@@ -54,7 +89,9 @@ const App: React.FC = () => {
       
       <p>Selected options: {selectedCheckboxes.length > 0 ? selectedCheckboxes.join(', ') : 'None'}</p>
 
-      <Flashcard frontText="Front of the card" backText="Back of the card" />
+      { loading? <Spinner /> :
+        <Flashcard frontText={result} backText={result} />
+      }
     </>
   );
 };
