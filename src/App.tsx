@@ -4,7 +4,8 @@ import NavBar from './components/Nav';
 import Navbar from './components/landing/heading';
 import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider, } from "@fluentui/react-components";
 import FlashcardList, { FlashcardData, FlashcardListProps } from './components/FlashcardList';
-
+import Lottie from 'react-lottie';
+import animationData from './assets/loadinganimation.json';
 
 const App: React.FC = () => {
   
@@ -77,7 +78,14 @@ const App: React.FC = () => {
     };
   };
   
-
+  const animationDefaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
+  };
   //const prompt = "NASA is a space org. Janna is a software engineer.";
   
 
@@ -146,6 +154,17 @@ const App: React.FC = () => {
       <Button id="sendFilesButton" onClick={handleSendFiles}>MUH CARDS</Button>
 
       {flashcards?.length > 0 && <FlashcardList flashcards={flashcards} />}
+
+      {/*
+        <div style={{ float: 'left'}}>
+          <Lottie 
+          options={animationDefaultOptions}
+            height={100}
+            width={100}
+          />
+        </div>
+      */}
+
     </>
   );
 };
