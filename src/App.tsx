@@ -39,23 +39,34 @@ const App: React.FC = () => {
     { frontText: 'What is the largest desert in the world?', backText: 'Sahara Desert' },
     { frontText: 'Who was the first man to walk on the moon?', backText: 'Neil Armstrong' }
   ];
-
-  // Call the ChatCompletion function and store the result of the async function
-
   
-  const [result, setResult] = useState<string>("");
-
-  type ResponseMessage = {
-    message: {
-      content: string;
-    };
-  };
+  const [prompt, setPrompt] = useState<string>('NASA is a space org. Janna is a software engineer.');
   
   const handleSendFiles = () => {
     const sendFiles = async () => {
       console.log("Number of files sent: ", selectedFiles.length);
       console.log("File: ", selectedFiles.toString());
 
+      const reader = new FileReader();
+
+      /*
+      // Read the first file
+      reader.readAsText(selectedFiles[0]);
+
+      // When the file is read, set the prompt to the file content
+      reader.onload = () => {
+        const content = reader.result as string;
+        setPrompt(content);
+      
+      console.log("here is the read string ", prompt);
+      */
+      const sometext = selectedFiles[0].content;
+      console.log("sometext: ", sometext);
+
+      setPrompt(sometext);
+      fetchFlashcards();
+      
+      /*
       const result = await fetch("http://localhost:5001/api/generateFlashcards", {
         method: 'POST',
         mode: 'cors',
@@ -70,35 +81,22 @@ const App: React.FC = () => {
       setResult(message)
       console.log("Result: ", result);
       setLoading(false);
-      // .then(response => response.text())
-      // .then(data => console.log(data))
-      // .catch(error => console.error('Error:', error));
+      */
+
     };
     sendFiles();
   };
   
-  useEffect(() => {
-    const fetchData = async () => {
-     const result = await fetch("http://localhost:5001/api/generateFlashcards", {
-        method: 'POST',
-        mode: "cors",
-        headers: {
-          'Content-Type': 'application/json',
-        },  
-      });
-      const data = await result.json() as ResponseMessage;
-      const message = data.message.content;
-      console.log("Message: ", message);
-      setResult(message);
-      console.log("Result: ", result);
-      setLoading(false);
-    };
+
+  //const prompt = "NASA is a space org. Janna is a software engineer.";
+  
+
+
   const [flashcards, setFlashcards] = useState<FlashcardData[]>(sampleFlashcards);
   
-  const prompt = "NASA is a space org. Janna is a software engineer.";
+
 
   async function fetchFlashcards() {
-
     const response = await fetch("http://localhost:5001/api/generateFlashcards", {
       method: 'POST',
       mode: "cors",
@@ -161,5 +159,6 @@ const App: React.FC = () => {
     </>
   );
 };
+
 
 export default App;
