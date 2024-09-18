@@ -2,6 +2,9 @@ import React, { useState , useEffect } from 'react';
 import './App.css';
 import NavBar from './components/Nav';
 import Navbar from './components/landing/heading';
+import Lottie from 'react-lottie';
+import animationData from './lotties/loadinganimation.json';
+
 import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider } from "@fluentui/react-components";
 import FlashcardList, { FlashcardData, FlashcardListProps } from './components/FlashcardList';
 
@@ -26,6 +29,15 @@ const App: React.FC = () => {
   };
 
   const [selectedRadio, setSelectedRadio] = useState<string>('');
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
+  };
   
   const sampleFlashcards: FlashcardData[] = [
     { frontText: 'What is the capital of France?', backText: 'Paris' },
@@ -124,7 +136,7 @@ const App: React.FC = () => {
     fetchFlashcards();
   }, []);
   
-  
+
   return (
     // Create a new TabList component
     <>
@@ -156,6 +168,17 @@ const App: React.FC = () => {
       </div>
       
       <p>Selected options: {selectedCheckboxes.length > 0 ? selectedCheckboxes.join(', ') : 'None'}</p>
+
+      {/*
+        <div style={{ float: 'left'}}>
+          <Lottie 
+          options={defaultOptions}
+            height={100}
+            width={100}
+          />
+        </div>
+      */}
+
       
       <Button id="sendFilesButton" onClick={handleSendFiles}>MUH CARDS</Button>
 
