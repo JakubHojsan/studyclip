@@ -7,6 +7,8 @@ import FlashcardList, { FlashcardData, FlashcardListProps } from './components/F
 
 
 const App: React.FC = () => {
+  
+  const [selectedFiles, setSelectedFiles] = useState<{ name: string; content: string }[]>([]);
 
   // LIst of focus areas for flashcards
   const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5'];
@@ -71,7 +73,7 @@ const App: React.FC = () => {
   return (
     // Create a new TabList component
     <>
-      <NavBar />
+      <NavBar setSelectedFiles={setSelectedFiles}/>
       <TabList>
       </TabList>
       <div id="Wtf are we doing">

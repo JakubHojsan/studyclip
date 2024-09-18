@@ -3,9 +3,15 @@ import { useFilePicker } from 'use-file-picker';
 import {Button} from '@fluentui/react-components';
 import { useStyles } from "./FileUploader.styles";
 
-const FileSelector: React.FC = () => {
+export interface FileSelectorProps {
+  setSelectedFiles: React.Dispatch<React.SetStateAction<{
+    name: string;
+    content: string;
+}[]>>
+}
+
+const FileSelector: React.FC<FileSelectorProps> = (props) => {
   var classes = useStyles();
-  const [selectedFiles, setSelectedFiles] = useState<{ name: string; content: string }[]>([]);
   const { filesContent, openFilePicker } = useFilePicker({
     accept: '.txt,.pdf',
     multiple: true,
@@ -13,7 +19,7 @@ const FileSelector: React.FC = () => {
 
   useEffect(() => {
     if (filesContent.length) {
-      setSelectedFiles(filesContent);
+      props.setSelectedFiles(filesContent);
     }
   }, [filesContent]);
 
