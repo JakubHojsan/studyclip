@@ -4,7 +4,6 @@ import NavBar from './components/Nav';
 import Navbar from './components/landing/heading';
 import Lottie from 'react-lottie';
 import animationData from './lotties/loadinganimation.json';
-
 import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider } from "@fluentui/react-components";
 import FlashcardList, { FlashcardData, FlashcardListProps } from './components/FlashcardList';
 
@@ -30,7 +29,7 @@ const App: React.FC = () => {
 
   const [selectedRadio, setSelectedRadio] = useState<string>('');
 
-  const defaultOptions = {
+  const animationDefaultOptions = {
     loop: true,
     autoplay: true,
     animationData: animationData,
@@ -172,7 +171,7 @@ const App: React.FC = () => {
       {/*
         <div style={{ float: 'left'}}>
           <Lottie 
-          options={defaultOptions}
+          options={animationDefaultOptions}
             height={100}
             width={100}
           />
