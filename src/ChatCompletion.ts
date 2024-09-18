@@ -6,7 +6,7 @@ const apiKey = process.env["REACT_APP_AZURE_OPENAI_API_KEY"] || "<api key>";
 const apiVersion = "2023-03-15-preview";
 const deployment = "gpt-4o"; //This must match your deployment name.
 
-async function generateFlashcards(prompt) {
+async function generateFlashcards(prompt: string): Promise<string> {
   const client = new AzureOpenAI({ endpoint, apiKey, apiVersion, deployment});
   const result = await client.chat.completions.create({
   

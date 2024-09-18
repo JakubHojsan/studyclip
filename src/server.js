@@ -1,11 +1,25 @@
-import generateFlashcards from './ChatCompletion';
-
 // server.js
 const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5001;
 const cors = require('cors');
+
+const { AzureOpenAI } = require("openai");
+
+// require dotenv
+require('dotenv').config();
+
+if (!process.env["REACT_APP_AZURE_OPENAI_ENDPOINT"] || !process.env["REACT_APP_AZURE_OPENAI_API_KEY"]) {
+  console.error("Please set the REACT_APP_AZURE_OPENAI_ENDPOINT and REACT_APP_AZURE_OPENAI_API_KEY environment variables.");
+  process.exit(1);
+}
+
+// You will need to set these environment variables or edit the following values
+const endpoint = process.env["REACT_APP_AZURE_OPENAI_ENDPOINT"] || "<endpoint>";
+const apiKey = process.env["REACT_APP_AZURE_OPENAI_API_KEY"] || "<api key>";
+const apiVersion = "2023-03-15-preview";
+const deployment = "gpt-4o"; //This must match your deployment name.
 
 const corsOptions = {
   origin : 'http://localhost:3000',
@@ -38,15 +52,29 @@ app.post('/api/openai', async (req, res) => {
 
 app.post('/api/generateFlashcards', async (req, res) => {
   const prompt = req.body.prompt;
-  const completion = await generateFlashcards(prompt);
+
+  const client = new AzureOpenAI({ endpoint, apiKey, apiVersion, deployment});
+  const result = await client.chat.completions.create({
+  
+  messages: [
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "Generate a random number." },
+   ],
+    model: "",
+  });
+
+  for (const choice of result.choices) {
+    console.log("random numbers???")
+    console.log(choice.message);
+  }
 
   try {
     return res.status(200).json({
-      message: completion,
+      message: result.choices[0].message,
     })
   }
   catch (error) {
-    console.log("bello!")
+    console.log("bello! you have an error in api/generateFlashcards")
     console.log(error.message);
   }
 });
