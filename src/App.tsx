@@ -3,7 +3,8 @@ import './App.css';
 import NavBar from './components/Nav';
 import Navbar from './components/landing/heading';
 import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider } from "@fluentui/react-components";
-import Flashcard from './flashcard';
+import FlashcardList, { FlashcardData } from './components/FlashcardList';
+
 
 const App: React.FC = () => {
 
@@ -21,6 +22,18 @@ const App: React.FC = () => {
   };
 
   const [selectedRadio, setSelectedRadio] = useState<string>('');
+  const flashcards: FlashcardData[] = [
+    { frontText: 'What is the capital of France?', backText: 'Paris' },
+    { frontText: 'Who wrote "To Kill a Mockingbird"?', backText: 'Harper Lee' },
+    { frontText: 'What is the chemical symbol for water?', backText: 'H2O' },
+    { frontText: 'What year did the Titanic sink?', backText: '1912' },
+    { frontText: 'Who painted the Mona Lisa?', backText: 'Leonardo da Vinci' },
+    { frontText: 'What is the smallest planet in our solar system?', backText: 'Mercury' },
+    { frontText: 'What is the speed of light?', backText: '299,792,458 meters per second' },
+    { frontText: 'Who discovered penicillin?', backText: 'Alexander Fleming' },
+    { frontText: 'What is the largest desert in the world?', backText: 'Sahara Desert' },
+    { frontText: 'Who was the first man to walk on the moon?', backText: 'Neil Armstrong' }
+  ];
   
   return (
     // Create a new TabList component
@@ -54,7 +67,7 @@ const App: React.FC = () => {
       
       <p>Selected options: {selectedCheckboxes.length > 0 ? selectedCheckboxes.join(', ') : 'None'}</p>
 
-      <Flashcard frontText="Front of the card" backText="Back of the card" />
+      <FlashcardList flashcards={flashcards} />
     </>
   );
 };
