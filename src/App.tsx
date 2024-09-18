@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import './App.css';
 import NavBar from './components/Nav';
 import Navbar from './components/landing/heading';
@@ -34,6 +34,42 @@ const App: React.FC = () => {
     { frontText: 'What is the largest desert in the world?', backText: 'Sahara Desert' },
     { frontText: 'Who was the first man to walk on the moon?', backText: 'Neil Armstrong' }
   ];
+
+  // Call the ChatCompletion function and store the result of the async function
+
+  
+  const [result, setResult] = useState<string>("");
+
+  type ResponseMessage = {
+    message: string,
+  }
+  
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      /*
+      const result = await fetch("http://localhost:5001/api", {
+        mode: "cors"
+      });
+      const data = await result.json() as ResponseMessage;
+      const message = data.message;
+      console.log("Message: ", message);
+      setResult(message);
+      console.log("Result: ", result);
+      */
+     const result = await fetch("http://localhost:5001/api/openai", {
+        mode: "cors"
+      });
+      const data = await result.json() as ResponseMessage;
+      const message = data.message;
+      console.log("Message: ", message);
+      setResult(message);
+      console.log("Result: ", result);
+    };
+
+    fetchData();
+  }, []);
+  
   
   return (
     // Create a new TabList component
