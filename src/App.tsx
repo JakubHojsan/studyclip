@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import './App.css';
 import NavBar from './components/Nav';
 import Navbar from './components/landing/heading';
+import Lottie from 'react-lottie';
+import animationData from './lotties/loadinganimation.json';
+
 import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider } from "@fluentui/react-components";
 
 const App: React.FC = () => {
@@ -20,7 +23,16 @@ const App: React.FC = () => {
   };
 
   const [selectedRadio, setSelectedRadio] = useState<string>('');
-  
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
+  };
+
   return (
     // Create a new TabList component
     <>
@@ -52,6 +64,17 @@ const App: React.FC = () => {
       </div>
       
       <p>Selected options: {selectedCheckboxes.length > 0 ? selectedCheckboxes.join(', ') : 'None'}</p>
+
+      {/*
+        <div style={{ float: 'left'}}>
+          <Lottie 
+          options={defaultOptions}
+            height={100}
+            width={100}
+          />
+        </div>
+      */}
+
     </>
   );
 };
