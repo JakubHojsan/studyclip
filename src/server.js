@@ -57,7 +57,7 @@ app.post('/api/generateFlashcards', async (req, res) => {
   const result = await client.chat.completions.create({
   
   messages: [
-    { role: "system", content: "You are a helpful study assistant. You extract the distinct facts within the notes received to create flashcards. Flashcards are formatted as JSON objects with 'frontText' and 'backText' fields. Present all flashcards as a JSON array in raw format, not a codeblock, ensuring that no terms are added beyond those found in the original notes." },
+    { role: "system", content: "You are a helpful study assistant. You extract the distinct facts within the notes and create flashcards that ask a question on the front and answer that question on the back. Flashcards are formatted as JSON objects with 'frontText' and 'backText' fields. Present all flashcards as a JSON array in raw format, not a codeblock, ensuring that no terms are added beyond those found in the original notes." },
     { role: "user", content: prompt },
    ],
     model: "",
