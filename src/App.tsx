@@ -42,7 +42,29 @@ const App: React.FC = () => {
 
   const [flashcards, setFlashcards] = useState<FlashcardData[]>(sampleFlashcards);
   
-  const prompt = "NASA is a space org. Janna is a software engineer.";
+  const prompt: string = `Key Terms and Concepts
+Assignment 5
+Social Darwinism     
+Ideas of racial superiority backed by Darwinism used to justify imperialism in the late 19th century                                       
+Benedict Anderson and “Imagined Communities”
+Nation: an imagined political community that is imagined as both inherently limited (finite but elastic) and sovereign.
+Groups of people claiming common bond
+Ernst Renan and “What is a Nation?”
+Nations come into play historically; nations have soul and spiritual principle. The past is built upon memories and the present is founded on the will to continue. 
+People’s wish, self determination → post Enlightenment age
+Italian Unification
+‘What is a nation’ in Italian context
+Italy was a fragmented nation, consisted of competing city states with Piedmont as the most powerful. Austria had the north of Italy.
+Built on idea of going back to the past, heavily idealized past
+Wanted to return to Roman Empire/ Renaissance Italy; risorgimento (resurgence, unification). 
+Giuseppe Mazzini
+Source #1: 1831, ‘Young Italy’
+Held very idealistic and optimistic view of Italy, new unified Italy was predestined
+Source #2: 1852, ‘On Nationality’
+Written after Marxist threat in 1848 in France
+Raised social question of capital/labor
+What is nationality? → common language, culture, united passion
+Source is more pragmatic than previous source`;
 
   async function fetchFlashcards() {
 
