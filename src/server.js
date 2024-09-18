@@ -1,9 +1,14 @@
 // server.js
 const express = require('express');
+var bodyParser = require("body-parser");
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5001;
 const cors = require('cors');
+
+app.use(bodyParser.json({limit: '100kb'}));
+
+
 
 const { AzureOpenAI } = require("openai");
 
