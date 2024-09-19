@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -36,7 +35,6 @@ const darkTheme: Theme = {
 darkTheme.colorBrandForeground1 = poopcoloredKevinFav[110];
 darkTheme.colorBrandForeground2 = poopcoloredKevinFav[120];
 
-export const tokens = themeToTokensObject(lightTheme);
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

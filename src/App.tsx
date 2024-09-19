@@ -4,7 +4,6 @@ import NavBar from './components/Nav';
 import Navbar from './components/landing/heading';
 import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider, Spinner } from "@fluentui/react-components";
 import FlashcardList, { FlashcardData, FlashcardListProps } from './components/FlashcardList';
-import Lottie from 'react-lottie';
 import animationData from './assets/loadinganimation.json';
 import UploadModal from './components/UploadModal';
 
