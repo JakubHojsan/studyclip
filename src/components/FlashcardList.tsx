@@ -58,12 +58,20 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards, setFlashcards
     setFlashcards(shuffled);
     setCurrentIndex(0); // Reset to the first card
   };
+
+  const flipCard = () => {
+      setIsFlipped(!isFlipped);
+  }
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowRight') {
         goToNext(); // Right arrow key to go to the next card
       } else if (event.key === 'ArrowLeft') {
         goToPrevious(); // Left arrow key to go to the previous card
+      } else if (event.key === " ") {
+        //event.preventDefault();
+        // flipCard();
       }
     };
 
