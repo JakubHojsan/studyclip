@@ -2,7 +2,7 @@ import React, { useState , useEffect } from 'react';
 import './App.css';
 import NavBar from './components/Nav';
 import Navbar from './components/landing/heading';
-import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider, } from "@fluentui/react-components";
+import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGroup, Field, SkeletonContextProvider, Spinner } from "@fluentui/react-components";
 import FlashcardList, { FlashcardData, FlashcardListProps } from './components/FlashcardList';
 import Lottie from 'react-lottie';
 import animationData from './assets/loadinganimation.json';
@@ -73,6 +73,8 @@ const App: React.FC = () => {
   const [flashcards, setFlashcards] = useState<FlashcardData[]>([]);
 
   async function fetchFlashcards() {
+    setLoading(true);
+
     const response = await fetch("http://localhost:5001/api/generateFlashcards", {
       method: 'POST',
       mode: "cors",
@@ -135,7 +137,10 @@ const App: React.FC = () => {
       */}
 
       {flashcards?.length > 0 && <FlashcardList flashcards={flashcards} />}
-
+      {(flashcards?.length === 0 || loading) && 
+      <div className="spinner-container">
+        <Spinner label="Generating Flashcards" />
+      </div>}
       {/*
         <div style={{ float: 'left'}}>
           <Lottie 
