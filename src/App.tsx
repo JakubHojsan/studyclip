@@ -6,6 +6,7 @@ import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGr
 import FlashcardList, { FlashcardData, FlashcardListProps } from './components/FlashcardList';
 import animationData from './assets/loadinganimation.json';
 import UploadModal from './components/UploadModal';
+import { FileSelectorProps } from './components/FileUploader';
 
 const App: React.FC = () => {
   
@@ -35,12 +36,6 @@ const App: React.FC = () => {
     // Handle the form data (e.g., send it to a server or update state)
   };
 
-  
-  
-
-  
-  const [prompt, setPrompt] = useState<string>('NASA is a space org. Janna is a software engineer.');
-  
   const handleSendFiles = () => {
     const sendFiles = async () => {
       console.log("Number of files sent: ", selectedFiles.length);
@@ -49,8 +44,7 @@ const App: React.FC = () => {
       const sometext = selectedFiles[0].content;
       console.log("sometext: ", sometext);
 
-      setPrompt(sometext);
-      fetchFlashcards();
+      fetchFlashcards(sometext);
     };
 
     if (selectedFiles.length > 0) {
@@ -71,7 +65,7 @@ const App: React.FC = () => {
 
   const [flashcards, setFlashcards] = useState<FlashcardData[]>([]);
 
-  async function fetchFlashcards() {
+  async function fetchFlashcards(prompt: string) {
     setLoading(true);
 
     const response = await fetch("http://localhost:5001/api/generateFlashcards", {
@@ -93,17 +87,16 @@ const App: React.FC = () => {
     setLoading(false);
   }
 
-  useEffect(() => {
-    fetchFlashcards();
-  }, []);
-  
+  const fileSelectorProps: FileSelectorProps = {
+    selectedFiles,
+    setSelectedFiles
+  };
   
   return (
-    // Create a new TabList component
     <>
-      <NavBar setSelectedFiles={setSelectedFiles}/>
-      <TabList>
-      </TabList>
+      {/*<NavBar setSelectedFiles={setSelectedFiles}/>*/}
+      <NavBar fileSelectorProps={fileSelectorProps} handleSendFiles={handleSendFiles}/>
+\
       {/*
       <div id="Wtf are we doing">
         <Field label="CHOOSE ONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!">
@@ -135,11 +128,14 @@ const App: React.FC = () => {
       <Button id="sendFilesButton" onClick={handleSendFiles}>MUH CARDS</Button>
       */}
 
-      {flashcards?.length > 0 && <FlashcardList flashcards={flashcards} />}
-      {(flashcards?.length === 0 || loading) && 
-      <div className="spinner-container">
-        <Spinner label="Generating Flashcards" />
-      </div>}
+      {loading ?
+        <div className="spinner-container">
+          <Spinner label="Generating Flashcards" />
+        </div> :
+        flashcards?.length > 0 && <FlashcardList flashcards={flashcards} />
+      }
+
+
       {/*
         <div style={{ float: 'left'}}>
           <Lottie 

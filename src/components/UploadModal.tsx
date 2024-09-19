@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Button, Dialog, DialogTrigger, DialogSurface, DialogBody, DialogTitle, DialogContent, DialogActions, Input, Label, makeStyles } from '@fluentui/react-components';
+import FileReader, { FileSelectorProps } from "./FileUploader";
 
 interface ModalProps {
-  isDialogOpen: boolean;
-  setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+    isDialogOpen: boolean;
+    setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+    fileSelectorProps: FileSelectorProps, 
+    handleSendFiles: () => void;
 }
 
 const useStyles = makeStyles({
@@ -30,10 +33,7 @@ const UploadModal: React.FC<ModalProps> = (props) => {
 
   const handleModalSubmit = (ev: React.FormEvent) => {
     ev.preventDefault();
-    const studyGoals = (ev.target as HTMLFormElement).elements.namedItem('study-goals-input') as HTMLInputElement;
-    const formData = {
-      studyGoals: studyGoals.value,
-    };
+    console.log("Modal submitted");
     closeDialog();
   };
 
@@ -46,6 +46,7 @@ const UploadModal: React.FC<ModalProps> = (props) => {
             <form onSubmit={handleModalSubmit}>
               <DialogBody>
                 <DialogTitle>Add Notes</DialogTitle>
+                <FileReader setSelectedFiles={props.fileSelectorProps.setSelectedFiles} selectedFiles={props.fileSelectorProps.selectedFiles}/>
                 <DialogContent className={styles.content}>
                   <Label htmlFor="study-goals-input">
                     Study Goals
@@ -56,7 +57,7 @@ const UploadModal: React.FC<ModalProps> = (props) => {
                   <DialogTrigger disableButtonEnhancement>
                     <Button appearance="secondary">Cancel</Button>
                   </DialogTrigger>
-                  <Button appearance="primary">Generate StudyClips</Button>
+                  <Button appearance="primary" disabled={props.fileSelectorProps.selectedFiles?.length <= 0} onClick={() => {props.handleSendFiles(); props.setIsDialogOpen(false)}}>Create StudyClips</Button>
                 </DialogActions>
               </DialogBody>
             </form>

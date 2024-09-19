@@ -4,6 +4,10 @@ import {Button} from '@fluentui/react-components';
 import { useStyles } from "./FileUploader.styles";
 
 export interface FileSelectorProps {
+  selectedFiles: {
+    name: string;
+    content: string;
+  }[];
   setSelectedFiles: React.Dispatch<React.SetStateAction<{
     name: string;
     content: string;
