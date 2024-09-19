@@ -6,6 +6,7 @@ import { Button, Checkbox, Dropdown, makeStyles, TabList, tokens, Radio, RadioGr
 import FlashcardList, { FlashcardData, FlashcardListProps } from './components/FlashcardList';
 import Lottie from 'react-lottie';
 import animationData from './assets/loadinganimation.json';
+import { FileSelectorProps } from './components/FileUploader';
 
 const App: React.FC = () => {
   
@@ -27,49 +28,20 @@ const App: React.FC = () => {
   };
 
   const [selectedRadio, setSelectedRadio] = useState<string>('');
-  const [prompt, setPrompt] = useState<string>('NASA is a space org. Janna is a software engineer.');
-  
-  const handleSendFiles = () => {
+  const [prompt, setPrompt] = useState<string>('');
+  useEffect(() => {
+    fetchFlashcards();
+  }, [prompt]);
+  const handleSendFiles = ()  => {
     const sendFiles = async () => {
       console.log("Number of files sent: ", selectedFiles.length);
       console.log("File: ", selectedFiles.toString());
 
       const reader = new FileReader();
-
-      /*
-      // Read the first file
-      reader.readAsText(selectedFiles[0]);
-
-      // When the file is read, set the prompt to the file content
-      reader.onload = () => {
-        const content = reader.result as string;
-        setPrompt(content);
-      
-      console.log("here is the read string ", prompt);
-      */
       const sometext = selectedFiles[0].content;
       console.log("sometext: ", sometext);
 
       setPrompt(sometext);
-      fetchFlashcards();
-      
-      /*
-      const result = await fetch("http://localhost:5001/api/generateFlashcards", {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ files: selectedFiles }),
-      });
-      const data = await result.json() as ResponseMessage;
-      const message = data.message.content;
-      console.log("New Cards:", message);
-      setResult(message)
-      console.log("Result: ", result);
-      setLoading(false);
-      */
-
     };
     if (selectedFiles.length > 0) {
       sendFiles();
@@ -86,13 +58,8 @@ const App: React.FC = () => {
       preserveAspectRatio: "xMidYMid slice"
     }
   };
-  //const prompt = "NASA is a space org. Janna is a software engineer.";
-  
-
 
   const [flashcards, setFlashcards] = useState<FlashcardData[]>([]);
-  
-
 
   async function fetchFlashcards() {
     const response = await fetch("http://localhost:5001/api/generateFlashcards", {
@@ -118,11 +85,15 @@ const App: React.FC = () => {
     fetchFlashcards();
   }, []);
   
-  
+  const fileSelectorProps: FileSelectorProps = {
+    selectedFiles,
+    setSelectedFiles
+  };
+
   return (
     // Create a new TabList component
     <>
-      <NavBar setSelectedFiles={setSelectedFiles}/>
+      <NavBar fileSelectorProps={fileSelectorProps} handleSendFiles={handleSendFiles}/>
       <TabList>
       </TabList>
       <div id="Wtf are we doing">
@@ -154,16 +125,6 @@ const App: React.FC = () => {
       <Button id="sendFilesButton" onClick={handleSendFiles}>MUH CARDS</Button>
 
       {flashcards?.length > 0 && <FlashcardList flashcards={flashcards} />}
-
-      {/*
-        <div style={{ float: 'left'}}>
-          <Lottie 
-          options={animationDefaultOptions}
-            height={100}
-            width={100}
-          />
-        </div>
-      */}
 
     </>
   );

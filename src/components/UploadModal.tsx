@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Button, Dialog, DialogTrigger, DialogSurface, DialogBody, DialogTitle, DialogContent, DialogActions, Input, Label, makeStyles } from '@fluentui/react-components';
+import FileReader, { FileSelectorProps } from "./FileUploader";
 
 interface ModalProps {
   isDialogOpen: boolean;
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+  fileSelectorProps: FileSelectorProps, 
+  handleSendFiles: () => void;
 }
 
 const useStyles = makeStyles({
@@ -41,17 +44,18 @@ const UploadModal: React.FC<ModalProps> = (props) => {
             <form onSubmit={handleModalSubmit}>
               <DialogBody>
                 <DialogTitle>Add Notes</DialogTitle>
-                <DialogContent className={styles.content}>
+                <FileReader setSelectedFiles={props.fileSelectorProps.setSelectedFiles} selectedFiles={props.fileSelectorProps.selectedFiles}/>
+               {/*  {<DialogContent className={styles.content}>
                   <Label htmlFor="study-goals-input">
                     Study Goals
                   </Label>
                   <Input id="study-goals-input" />
-                </DialogContent>
+                </DialogContent>}  */}
                 <DialogActions>
                   <DialogTrigger disableButtonEnhancement>
                     <Button appearance="secondary">Close</Button>
                   </DialogTrigger>
-                  <Button appearance="primary">Do Something</Button>
+                  <Button appearance="primary" disabled={props.fileSelectorProps.selectedFiles?.length <= 0} onClick={() => {props.handleSendFiles(); props.setIsDialogOpen(false)}}>Create</Button>
                 </DialogActions>
               </DialogBody>
             </form>
