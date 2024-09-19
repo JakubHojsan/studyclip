@@ -9,8 +9,6 @@ import UploadModal from './components/UploadModal';
 import { FileSelectorProps } from './components/FileUploader';
 
 const App: React.FC = () => {
-  
-  const [selectedFiles, setSelectedFiles] = useState<{ name: string; content: string }[]>([]);
 
   /*
   // LIst of focus areas for flashcards
@@ -29,31 +27,9 @@ const App: React.FC = () => {
   const [selectedRadio, setSelectedRadio] = useState<string>('');
   */ 
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [flashcards, setFlashcards] = useState<FlashcardData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleFormSubmit = (formData: { studyGoals: string }) => {
-    console.log('Form Data:', formData);
-    // Handle the form data (e.g., send it to a server or update state)
-  };
-
-  const handleSendFiles = () => {
-    const sendFiles = async () => {
-      console.log("Number of files sent: ", selectedFiles.length);
-      console.log("File: ", selectedFiles.toString());
-
-      const sometext = selectedFiles[0].content;
-      console.log("sometext: ", sometext);
-
-      fetchFlashcards(sometext);
-    };
-
-    if (selectedFiles.length > 0) {
-      sendFiles();
-    } else {
-      console.log('No files uploaded');
-    };
-  };
-  
   const animationDefaultOptions = {
     loop: true,
     autoplay: true,
@@ -62,41 +38,12 @@ const App: React.FC = () => {
       preserveAspectRatio: "xMidYMid slice"
     }
   }; 
-
-  const [flashcards, setFlashcards] = useState<FlashcardData[]>([]);
-
-  async function fetchFlashcards(prompt: string) {
-    setLoading(true);
-
-    const response = await fetch("http://localhost:5001/api/generateFlashcards", {
-      method: 'POST',
-      mode: "cors",
-      headers: {
-        'Content-Type': 'application/json',
-      },  
-      // add prompt
-      body: JSON.stringify({ prompt: prompt }),
-    });
-
-    const data = await response.json() as FlashcardListProps;
-
-    console.log("data", data);
-    
-    setFlashcards(data.flashcards);
-
-    setLoading(false);
-  }
-
-  const fileSelectorProps: FileSelectorProps = {
-    selectedFiles,
-    setSelectedFiles
-  };
   
   return (
     <>
       {/*<NavBar setSelectedFiles={setSelectedFiles}/>*/}
-      <NavBar fileSelectorProps={fileSelectorProps} handleSendFiles={handleSendFiles}/>
-\
+      <NavBar setFlashcards={setFlashcards} setLoading={setLoading}/>
+
       {/*
       <div id="Wtf are we doing">
         <Field label="CHOOSE ONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!">
