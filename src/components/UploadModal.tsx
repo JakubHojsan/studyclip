@@ -27,9 +27,14 @@ const UploadModal: React.FC<ModalProps> = (props) => {
   };  
 
   const styles = useStyles();
+
   const handleModalSubmit = (ev: React.FormEvent) => {
     ev.preventDefault();
-    console.log("Modal submitted");
+    const studyGoals = (ev.target as HTMLFormElement).elements.namedItem('study-goals-input') as HTMLInputElement;
+    const formData = {
+      studyGoals: studyGoals.value,
+    };
+    closeDialog();
   };
 
   return (
@@ -49,9 +54,9 @@ const UploadModal: React.FC<ModalProps> = (props) => {
                 </DialogContent>
                 <DialogActions>
                   <DialogTrigger disableButtonEnhancement>
-                    <Button appearance="secondary">Close</Button>
+                    <Button appearance="secondary">Cancel</Button>
                   </DialogTrigger>
-                  <Button appearance="primary">Do Something</Button>
+                  <Button appearance="primary">Generate StudyClips</Button>
                 </DialogActions>
               </DialogBody>
             </form>
