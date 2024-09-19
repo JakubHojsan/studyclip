@@ -41,7 +41,7 @@ const NavBar: React.FC<FileSelectorProps> = (props) => {
       {/* Right section: Navigation Links */}
       <Stack horizontal tokens={stackTokens}>
         {/*<FileReader setSelectedFiles={props.setSelectedFiles}/>*/}
-        <UploadModal isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen}/>
+        <UploadModal isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
       </Stack>
       <Button onClick={() => setIsDialogOpen(true)}> Create Flashcards </Button>
     </Stack>
