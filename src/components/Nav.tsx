@@ -7,14 +7,11 @@ import {ReactComponent as StudyLogoTitle} from '../assets/studylogotitle.svg';
 import { FlashcardData } from './FlashcardList';
 
 interface NavProps {
+  flashcards: FlashcardData[]
   setFlashcards: (flashcards: FlashcardData[]) => void;
   setLoading: (loading: boolean) => void;
 }
 
-interface NavProps {
-  fileSelectorProps: FileSelectorProps;
-  handleSendFiles: ()=> void;
-}
 // Define spacing between the navigation items
 const stackTokens: IStackTokens = { childrenGap: 20 };
 
@@ -26,9 +23,26 @@ const useStyles = makeStyles({
     },
 });
 
-const NavBar: React.FC<NavProps> = ({ setFlashcards, setLoading }) => {
+const NavBar: React.FC<NavProps> = ({ setFlashcards, flashcards, setLoading }) => {
   const styles = useStyles();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+  // Function to export flashcards in TSV format for Anki
+  const exportFlashcardsToAnki = () => {
+    // Create TSV format (tab-separated values)
+    const ankiData = flashcards
+      .map(flashcard => `${flashcard.frontText}\t${flashcard.backText}`)
+      .join('\n');
+
+    // Create a blob from the data
+    const blob = new Blob([ankiData], { type: 'text/tab-separated-values' });
+
+    // Create a link element and trigger download
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'flashcards.tsv';
+    link.click();
+  };
 
   return (
     <Stack
@@ -50,8 +64,9 @@ const NavBar: React.FC<NavProps> = ({ setFlashcards, setLoading }) => {
       {/* Right section: Navigation Links */}
       <Stack horizontal tokens={stackTokens}>
         <UploadModal isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} setFlashcards={setFlashcards} setLoading={setLoading}/>
-      </Stack>
+      <Button onClick={exportFlashcardsToAnki} appearance="primary"> Export to Anki </Button>
       <Button onClick={() => setIsDialogOpen(true)} appearance="primary"> Create Flashcards </Button>
+      </Stack>
     </Stack>
   );
 }

@@ -13,9 +13,10 @@ export interface FlashcardData {
 
 export interface FlashcardListProps {
   flashcards: FlashcardData[];
+  setFlashcards: React.Dispatch<React.SetStateAction<FlashcardData[]>>
 }
 
-const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards }) => {
+const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards, setFlashcards}) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0); // Manage the current flashcard index
   const [isFlipped, setIsFlipped] = useState<boolean>(false); // Manage flip state
 
@@ -47,10 +48,19 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards }) => {
   const goToEnd = () => {
       setCurrentIndex(flashcards.length - 1);
   };
-
+  // Shuffle function using Fisher-Yates algorithm
+  const shuffleFlashcards = () => {
+    const shuffled = [...flashcards];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    setFlashcards(shuffled);
+    setCurrentIndex(0); // Reset to the first card
+  };
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight' || event.key === " ") {
+      if (event.key === 'ArrowRight') {
         goToNext(); // Right arrow key to go to the next card
       } else if (event.key === 'ArrowLeft') {
         goToPrevious(); // Left arrow key to go to the previous card
@@ -66,7 +76,7 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards }) => {
   }, [currentIndex]); // Dependencies include currentCardIndex to make sure it updates correctly
 
   return (
-    <Stack horizontalAlign="center" verticalAlign="center" tokens={stackTokens}>
+    <Stack horizontalAlign="center" tokens={stackTokens} style={{ marginTop: '150px'}}>
       {/* Render the current flashcard */}
       <Flashcard 
         frontText={flashcards[currentIndex].frontText} 
@@ -76,7 +86,7 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards }) => {
       />
 
       {/* Navigation Buttons */}
-      <Stack horizontal tokens={stackTokens} horizontalAlign="center">
+      <Stack horizontal tokens={stackTokens} verticalAlign='center'  style={{ marginTop: '15px', marginBottom: '5px'}}>
         <Button
           onClick={goToBeginning}
           disabled={currentIndex === 0} // Disable if on the first card
@@ -107,6 +117,13 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards }) => {
           Go to end
         </Button>
       </Stack>
+      <Button
+          onClick={shuffleFlashcards}
+          appearance="primary"
+          style={{width: "15%"}}
+          >
+          Shuffle
+      </Button>
     </Stack>
   );
 };

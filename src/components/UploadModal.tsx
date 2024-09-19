@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Dialog, DialogTrigger, DialogSurface, DialogBody, DialogTitle, DialogContent, DialogActions, Input, Label, makeStyles } from '@fluentui/react-components';
 import FileSelector, { FileData } from "./FileUploader";
 import { FlashcardData, FlashcardListProps } from "./FlashcardList";
+import type { InputProps } from "@fluentui/react-components";
 
 interface ModalProps {
     isDialogOpen: boolean;
@@ -22,6 +23,8 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
 
   const [selectedFiles, setSelectedFiles] = useState<FileData[]>([]);
   const styles = useStyles();
+  const [studyGoal, setStudyGoal] = useState<string>("To review");
+  const [numFlashcards, setNumFlashcards] = useState<number>(20);
 
   const handleSendFiles = async () => {
     const sendFiles = async () => {
@@ -51,7 +54,7 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
         'Content-Type': 'application/json',
       },  
       // add prompt
-      body: JSON.stringify({ prompt: prompt }),
+      body: JSON.stringify({ prompt: prompt, studyGoal: studyGoal, numCards: numFlashcards}),
     });
 
     const data = await response.json() as FlashcardListProps;
@@ -67,6 +70,19 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
   useEffect(() => {
     setIsDialogOpen(true);
   }, []);
+  const onChange: InputProps["onChange"] = (ev, data) => {
+    if (data.value.length <= 20) {
+      setStudyGoal(data.value);
+    }
+  };
+  const onChangeFlashCards: InputProps["onChange"] = (ev, data) => {
+    if (data.value) {
+      const numValue = parseInt(data.value, 10); // Use parseFloat for decimals
+      if (!isNaN(numValue)) {  // Check if the parsed value is a valid number
+        setNumFlashcards(numValue);  // Set the numeric value to state
+      }
+    }
+  };
 
   return (
     // Dialog component
@@ -74,13 +90,17 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
         <Dialog open={isDialogOpen} onOpenChange={(_, data) => setIsDialogOpen(data.open)}>
           <DialogSurface>
             <DialogBody>
-                <DialogTitle>Add Notes</DialogTitle>
+                <DialogTitle>Customize your deck</DialogTitle>
                 <FileSelector selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles}/>
                 <DialogContent className={styles.content}>
                     <Label htmlFor="study-goals-input">
                     Study Goals
                     </Label>
-                    <Input id="study-goals-input" />
+                    <Input id="study-goals-input" onChange={onChange}/>
+                    <Label htmlFor="num-flashcards-input">
+                    How many flashcards do you want?
+                    </Label>
+                    <Input id="num-flashcards-input" type="number" onChange={onChangeFlashCards} style={{marginBottom: 10}}/>
                 </DialogContent>
                 <DialogActions>
                     <DialogTrigger disableButtonEnhancement>

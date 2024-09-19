@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stack, Text } from '@fluentui/react';
 import {Card, Button} from '@fluentui/react-components';
 
@@ -14,7 +14,7 @@ const Flashcard: React.FC<FlashcardProps> = ({ frontText, backText, isFlipped, s
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
   };
-
+  
   return (
     <Stack
       horizontalAlign="center"
@@ -29,7 +29,7 @@ const Flashcard: React.FC<FlashcardProps> = ({ frontText, backText, isFlipped, s
     >
       {/* Card Component */}
       <Card style={{ 
-        width: '300px',
+        width: '350px',
         height: '200px',
         padding: '10px',
         display: 'flex',

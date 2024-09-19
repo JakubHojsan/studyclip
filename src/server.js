@@ -41,6 +41,8 @@ app.get('/api', (req, res) => {
 
 app.post('/api/generateFlashcards', async (req, res) => {
   const prompt = req.body.prompt;
+  const studyGoal = req.body.studyGoal;
+  const numFlashCards = req.body.numCards;
   // check if prompt is null or empty string
   if (!prompt || prompt.trim() === "") {
     return res.status(400).json({
@@ -52,7 +54,7 @@ app.post('/api/generateFlashcards', async (req, res) => {
   const result = await client.chat.completions.create({
   
   messages: [
-    { role: "system", content: "You are a helpful study assistant. You extract the distinct facts within the notes and create flashcards that ask a question on the front and answer that question on the back. Flashcards are formatted as JSON objects with 'frontText' and 'backText' fields. Present all flashcards as a JSON array in raw format, not a codeblock, ensuring that no terms are added beyond those found in the original notes." },
+    { role: "system", content: `You are a helpful study assistant. You extract the distinct facts within the notes and create flashcards that ask a question on the front and answer that question on the back. Flashcards are formatted as JSON objects with 'frontText' and 'backText' fields. Present all flashcards as a JSON array in raw format, not a codeblock, ensuring that no terms are added beyond those found in the original notes. Adjust the flashcards for the purpose of ${studyGoal}. Create ${numFlashCards} flashcards.` },
     { role: "user", content: prompt },
    ],
     model: "",
