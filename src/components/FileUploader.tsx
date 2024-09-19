@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useFilePicker } from 'use-file-picker';
 import {Button} from '@fluentui/react-components';
 import { useStyles } from "./FileUploader.styles";
 
+export type FileData = {
+  name: string;
+  content: string;
+};
+
 export interface FileSelectorProps {
-  selectedFiles: {
-    name: string;
-    content: string;
-}[];
-  setSelectedFiles: React.Dispatch<React.SetStateAction<{
-    name: string;
-    content: string;
-}[]>>
+  selectedFiles: FileData[];
+  setSelectedFiles: (files: FileData[]) => void;
 }
 
 const FileSelector: React.FC<FileSelectorProps> = (props) => {

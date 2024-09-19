@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { Stack, IStackTokens } from '@fluentui/react';
-import { FileSelectorProps } from './FileUploader';
+import { Stack, Link, Text, IStackTokens } from '@fluentui/react';
 import { tokens } from '@fluentui/react-components';
 import UploadModal  from './UploadModal';
 import { Button, makeStyles } from '@fluentui/react-components';
 import {ReactComponent as StudyLogoTitle} from '../assets/studylogotitle.svg';
+import { FlashcardData } from './FlashcardList';
+
+interface NavProps {
+  setFlashcards: (flashcards: FlashcardData[]) => void;
+  setLoading: (loading: boolean) => void;
+}
 
 interface NavProps {
   fileSelectorProps: FileSelectorProps;
@@ -21,7 +26,7 @@ const useStyles = makeStyles({
     },
 });
 
-const NavBar: React.FC<FileSelectorProps> = (props) => {
+const NavBar: React.FC<NavProps> = ({ setFlashcards, setLoading }) => {
   const styles = useStyles();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
@@ -44,8 +49,7 @@ const NavBar: React.FC<FileSelectorProps> = (props) => {
 
       {/* Right section: Navigation Links */}
       <Stack horizontal tokens={stackTokens}>
-        {/*<FileReader setSelectedFiles={props.setSelectedFiles}/>*/}
-        <UploadModal isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
+        <UploadModal isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} setFlashcards={setFlashcards} setLoading={setLoading}/>
       </Stack>
       <Button onClick={() => setIsDialogOpen(true)} appearance="primary"> Create Flashcards </Button>
     </Stack>
