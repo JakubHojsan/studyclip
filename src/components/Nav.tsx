@@ -9,6 +9,7 @@ import { FlashcardData } from './FlashcardList';
 interface NavProps {
   flashcards: FlashcardData[]
   setFlashcards: (flashcards: FlashcardData[]) => void;
+  loading: boolean;
   setLoading: (loading: boolean) => void;
 }
 
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
     },
 });
 
-const NavBar: React.FC<NavProps> = ({ setFlashcards, flashcards, setLoading }) => {
+const NavBar: React.FC<NavProps> = ({ setFlashcards, flashcards, loading, setLoading }) => {
   const styles = useStyles();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
@@ -64,7 +65,7 @@ const NavBar: React.FC<NavProps> = ({ setFlashcards, flashcards, setLoading }) =
       {/* Right section: Navigation Links */}
       <Stack horizontal tokens={stackTokens}>
         <UploadModal isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} setFlashcards={setFlashcards} setLoading={setLoading}/>
-      <Button onClick={exportFlashcardsToAnki} appearance="primary"> Export to Anki </Button>
+      <Button onClick={exportFlashcardsToAnki} appearance="primary" disabled={flashcards.length === 0 || loading}> Export to Anki </Button>
       <Button onClick={() => setIsDialogOpen(true)} appearance="primary"> Create Flashcards </Button>
       </Stack>
     </Stack>

@@ -70,11 +70,20 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
   useEffect(() => {
     setIsDialogOpen(true);
   }, []);
+
+  // Reset selected files when the dialog is opened
+  useEffect(() => {
+    if (isDialogOpen) {
+      setSelectedFiles([]);
+    }
+  }, [isDialogOpen]);
+
   const onChange: InputProps["onChange"] = (ev, data) => {
     if (data.value.length <= 20) {
       setStudyGoal(data.value);
     }
   };
+
   const onChangeFlashCards: InputProps["onChange"] = (ev, data) => {
     if (data.value) {
       const numValue = parseInt(data.value, 10); // Use parseFloat for decimals

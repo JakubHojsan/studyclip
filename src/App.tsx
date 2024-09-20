@@ -23,7 +23,7 @@ const App: React.FC = () => {
   
   return (
     <>
-      <NavBar setFlashcards={setFlashcards} setLoading={setLoading} flashcards={flashcards}/>
+      <NavBar setFlashcards={setFlashcards} loading={loading} setLoading={setLoading} flashcards={flashcards}/>
 
       {loading ?
         <div className="spinner-container">
