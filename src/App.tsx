@@ -27,6 +27,14 @@ const App: React.FC = () => {
     left: '50%',
     transform: 'translate(-50%, -50%)',
   };
+
+  const flashcardStyle = {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  };
+
   
   return (
     <>
@@ -36,7 +44,10 @@ const App: React.FC = () => {
         <div style={loadingStyle}>
           <Spinner label="Generating Flashcards..." size="large"/>
         </div> :
-        flashcards?.length > 0 && <FlashcardList flashcards={flashcards} setFlashcards={setFlashcards} />
+        flashcards?.length > 0 && 
+        <div style={flashcardStyle}>
+          <FlashcardList flashcards={flashcards} setFlashcards={setFlashcards} />
+        </div>
       }
     </>
   );

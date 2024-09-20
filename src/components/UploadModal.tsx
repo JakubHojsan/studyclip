@@ -24,7 +24,7 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
   const [selectedFiles, setSelectedFiles] = useState<FileData[]>([]);
   const styles = useStyles();
   const [studyGoal, setStudyGoal] = useState<string>("");
-  const [numFlashcards, setNumFlashcards] = useState<number>(20);
+  const [numFlashcards, setNumFlashcards] = useState<number>(5);
 
   const handleSendFiles = async () => {
     const sendFiles = async () => {
@@ -77,7 +77,7 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
   useEffect(() => {
     if (isDialogOpen) {
       setStudyGoal("");
-      setNumFlashcards(20);
+      setNumFlashcards(5);
       setSelectedFiles([]);
     }
   }, [isDialogOpen]);
