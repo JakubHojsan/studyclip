@@ -20,14 +20,21 @@ const App: React.FC = () => {
       preserveAspectRatio: "xMidYMid slice"
     }
   }; 
+
+  const loadingStyle = {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  };
   
   return (
     <>
       <NavBar setFlashcards={setFlashcards} loading={loading} setLoading={setLoading} flashcards={flashcards}/>
 
       {loading ?
-        <div className="spinner-container">
-          <Spinner label="Generating Flashcards" />
+        <div style={loadingStyle}>
+          <Spinner label="Generating Flashcards..." size="large"/>
         </div> :
         flashcards?.length > 0 && <FlashcardList flashcards={flashcards} setFlashcards={setFlashcards} />
       }

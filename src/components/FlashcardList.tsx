@@ -56,6 +56,7 @@ const FlashcardList: React.FC<FlashcardListProps> = ({ flashcards, setFlashcards
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     setFlashcards(shuffled);
+    setIsFlipped(false); // Reset the flip state (need this if shuffling while already on the first card)
     setCurrentIndex(0); // Reset to the first card
   };
   useEffect(() => {

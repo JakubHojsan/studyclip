@@ -83,7 +83,7 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
   }, [isDialogOpen]);
 
   const onChange: InputProps["onChange"] = (ev, data) => {
-    if (data.value.length <= 20) {
+    if (data.value.length <= 100) {
       setStudyGoal(data.value);
     }
   };
