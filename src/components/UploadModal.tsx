@@ -23,7 +23,7 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
 
   const [selectedFiles, setSelectedFiles] = useState<FileData[]>([]);
   const styles = useStyles();
-  const [studyGoal, setStudyGoal] = useState<string>("To review");
+  const [studyGoal, setStudyGoal] = useState<string>("");
   const [numFlashcards, setNumFlashcards] = useState<number>(20);
 
   const handleSendFiles = async () => {
@@ -47,6 +47,8 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
   async function fetchFlashcards(prompt: string): Promise<void> {
     setLoading(true);
 
+    const parsedGoal = studyGoal.trim() === "" ? "General review" : studyGoal;
+
     const response = await fetch("http://localhost:5001/api/generateFlashcards", {
       method: 'POST',
       mode: "cors",
@@ -54,7 +56,7 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
         'Content-Type': 'application/json',
       },  
       // add prompt
-      body: JSON.stringify({ prompt: prompt, studyGoal: studyGoal, numCards: numFlashcards}),
+      body: JSON.stringify({ prompt: prompt, studyGoal: parsedGoal, numCards: numFlashcards}),
     });
 
     const data = await response.json() as FlashcardListProps;
@@ -71,9 +73,11 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
     setIsDialogOpen(true);
   }, []);
 
-  // Reset selected files when the dialog is opened
+  // Reset states when the dialog is opened
   useEffect(() => {
     if (isDialogOpen) {
+      setStudyGoal("");
+      setNumFlashcards(20);
       setSelectedFiles([]);
     }
   }, [isDialogOpen]);
@@ -85,12 +89,21 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
   };
 
   const onChangeFlashCards: InputProps["onChange"] = (ev, data) => {
-    if (data.value) {
-      const numValue = parseInt(data.value, 10); // Use parseFloat for decimals
-      if (!isNaN(numValue)) {  // Check if the parsed value is a valid number
-        setNumFlashcards(numValue);  // Set the numeric value to state
-      }
+    const input = ev.target.value;
+  
+    if (input === "") {
+      // Prevent clearing the input field
+      return;
     }
+  
+    const numValue = parseInt(input, 10);
+  
+    // OpenAI seems to have problems above 40 flashcards
+    if (isNaN(numValue) || numValue < 1 || numValue > 40) {
+      return;
+    } 
+
+    setNumFlashcards(numValue); // Set valid number to state
   };
 
   return (
@@ -105,11 +118,11 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
                     <Label htmlFor="study-goals-input">
                     Study Goals
                     </Label>
-                    <Input id="study-goals-input" onChange={onChange}/>
+                    <Input id="study-goals-input" placeholder={"e.g. \"Vocab\" or \"Key concepts\""} onChange={onChange}/>
                     <Label htmlFor="num-flashcards-input">
                     How many flashcards do you want?
                     </Label>
-                    <Input id="num-flashcards-input" type="number" onChange={onChangeFlashCards} style={{marginBottom: 10}}/>
+                    <Input id="num-flashcards-input" type="number" value={numFlashcards.toString()} onChange={onChangeFlashCards} style={{marginBottom: 12}}/>
                 </DialogContent>
                 <DialogActions>
                     <DialogTrigger disableButtonEnhancement>
