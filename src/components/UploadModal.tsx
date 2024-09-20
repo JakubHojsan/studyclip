@@ -96,7 +96,7 @@ const UploadModal: React.FC<ModalProps> = ({isDialogOpen, setIsDialogOpen, setFl
   return (
     // Dialog component
     <>
-        <Dialog open={isDialogOpen} onOpenChange={(_, data) => setIsDialogOpen(data.open)}>
+        <Dialog open={isDialogOpen} onOpenChange={(_, data) => setIsDialogOpen(data.open)} modalType={"alert"}>
           <DialogSurface>
             <DialogBody>
                 <DialogTitle>Customize your deck</DialogTitle>
